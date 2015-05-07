@@ -38,9 +38,8 @@ public class ThreadController {
                 System.out.println("Killing Thread Running on Pin " + number);
                 iter.remove();
                 if (thread instanceof PwmFadeThread) {
-                    ((PwmFadeThread) thread).requestThreadStop();
+                    ((PwmFadeThread) thread).kill();
                 }
-                //thread.interrupt();
             }
         }
     }

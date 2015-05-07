@@ -2,25 +2,20 @@ package home.control.model;
 
 public class PinConfiguration {
 
-    public enum PinState {
-        INPUT, OUTPUT, SOFT_PWM
-    }
-
     private Event event;
-    private PinState pinState;
     private int number;
     private String name;
     private int debounce;
     private int pwmValue;
     private boolean outputHigh;
-    private long duration;
+    private long cycleDuration;
     private long uptime;
     private long downtime;
     private int startVal;
     private int endVal;
     private boolean repeat;
     private int cycles;
-    private long pause;
+    private long cyclePause;
 
     /**
      * Used for SET EVENT
@@ -47,25 +42,26 @@ public class PinConfiguration {
     }
 
     /**
-     * Used for FADE Events
-     * @param event
-     * @param number
-     * @param startVal
-     * @param endVal
-     * @param repeat
-     * @param cycles
+     *
+     * @param event Event to run
+     * @param number the number of the Pi
+     * @param cycleDuration How long should a cycle (one repeating) last
+     * @param startVal start value for the PWM fader
+     * @param endVal end value of the PWM fader
+     * @param repeat defines if the effect should run only once or more times
+     * @param cycles the amount of repeatings
+     * @param cyclePause the pause between the repeatings in ms
      */
-    public PinConfiguration(Event event, int number, long duration, int startVal, int endVal, boolean repeat, int cycles) {
+    public PinConfiguration(Event event, int number, long cycleDuration, int startVal, int endVal, boolean repeat, int cycles, int cyclePause) {
         this.event = event;
         this.number = number;
-        this.duration = duration;
+        this.cycleDuration = cycleDuration;
         this.startVal = startVal;
         this.endVal = endVal;
         this.repeat = repeat;
         this.cycles = cycles;
-        this.pause = duration / Math.abs(endVal - startVal);
+        this.cyclePause = cyclePause;
     }
-
 
     public Event getEvent() {
         return event;
@@ -73,14 +69,6 @@ public class PinConfiguration {
 
     public void setEvent(Event event) {
         this.event = event;
-    }
-
-    public PinState getPinState() {
-        return pinState;
-    }
-
-    public void setPinState(PinState pinState) {
-        this.pinState = pinState;
     }
 
     public int getNumber() {
@@ -123,12 +111,12 @@ public class PinConfiguration {
         this.outputHigh = outputHigh;
     }
 
-    public long getDuration() {
-        return duration;
+    public long getCycleDuration() {
+        return cycleDuration;
     }
 
-    public void setDuration(long duration) {
-        this.duration = duration;
+    public void setCycleDuration(long cycleDuration) {
+        this.cycleDuration = cycleDuration;
     }
 
     public long getUptime() {
@@ -179,11 +167,11 @@ public class PinConfiguration {
         this.cycles = cycles;
     }
 
-    public long getPause() {
-        return pause;
+    public long getCyclePause() {
+        return cyclePause;
     }
 
-    public void setPause(long pause) {
-        this.pause = pause;
+    public void setCyclePause(long cyclePause) {
+        this.cyclePause = cyclePause;
     }
 }

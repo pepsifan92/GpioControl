@@ -28,7 +28,7 @@ public class Main {
 
 	private static void generateDummyJsonObjects() {
 		Gson gson = new Gson();
-		PinConfiguration pinConfiguration = new PinConfiguration(Event.FADE, 0, 5000, 100, 0, true, 3);
+		PinConfiguration pinConfiguration = new PinConfiguration(Event.FADE, 0, 5000, 100, 0, true, 3, 0);
 		System.out.println(gson.toJson(pinConfiguration));
 	}
 

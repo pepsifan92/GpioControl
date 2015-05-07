@@ -10,13 +10,15 @@ import home.control.model.PinConfiguration;
 public class PwmFadeThread extends Thread{
 
     private PinConfiguration conf;
-    private volatile boolean isAlive = true;
+    private volatile boolean isRunning = true; //"You really should make it volatile. There are no synchronization problems, then."
+    private long stepPause;
     public PwmFadeThread(PinConfiguration conf) {
         this.conf = conf;
+        stepPause = conf.getCycleDuration() / Math.abs(conf.getEndVal() - conf.getStartVal());
     }
 
-    public void requestThreadStop() {
-        isAlive = false;
+    public void kill() {
+        isRunning = false;
     }
 
     @Override
@@ -26,8 +28,9 @@ public class PwmFadeThread extends Thread{
 
         if (conf.isRepeat()) {
             for (int i = 0; i < conf.getCycles(); i++) {
-                if (!isAlive) { break; }
+                if (!isRunning) { break; }
                 pwmLoop();
+                pause(conf.getCyclePause()); //Pause between the cycles
             }
         } else {
             pwmLoop();
@@ -48,7 +51,7 @@ public class PwmFadeThread extends Thread{
 
     private void fadeUp() {
         for (int i = conf.getStartVal(); i < conf.getEndVal() ; i++) {
-            if (!isAlive) { break; }
+            if (!isRunning) { break; }
             fade(i);
         }
         Server.socket.send("Fading Up Message from Server");
@@ -56,7 +59,7 @@ public class PwmFadeThread extends Thread{
 
     private void fadeDown() {
         for (int i = conf.getStartVal(); i > conf.getEndVal(); i--) {
-            if (!isAlive) { break; }
+            if (!isRunning) { break; }
             fade(i);
         }
         Server.socket.send("Fading Down Message from Server");
@@ -64,7 +67,7 @@ public class PwmFadeThread extends Thread{
 
     private void fade(int i) {
         SoftPwm.softPwmWrite(conf.getNumber(), i);
-        pause(conf.getPause());
+        pause(stepPause);
     }
 
     private void pause(long pause) {
