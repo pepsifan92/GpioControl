@@ -3,7 +3,7 @@ package home.control.model;
 public class PinConfiguration {
 
     private Event event;
-    private int number;
+    private int number = -1;
     private String name;
     private int debounce;
     private int pwmValue;
@@ -16,6 +16,15 @@ public class PinConfiguration {
     private boolean repeat;
     private int cycles;
     private long cyclePause;
+
+    public PinConfiguration() {
+        //System.out.println("Default Constructor");
+    }
+
+
+    public PinConfiguration(int number) {
+        this.number = number;
+    }
 
     /**
      * Used for SET EVENT

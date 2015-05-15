@@ -1,6 +1,7 @@
 package home.control.controller;
 
 import home.control.Thread.PwmFadeThread;
+import home.control.Thread.PwmFadeUpDownThread;
 import home.control.model.PinConfiguration;
 
 import java.util.ArrayList;
@@ -39,6 +40,8 @@ public class ThreadController {
                 iter.remove();
                 if (thread instanceof PwmFadeThread) {
                     ((PwmFadeThread) thread).kill();
+                } else if (thread instanceof PwmFadeUpDownThread) {
+                    ((PwmFadeUpDownThread) thread).kill();
                 }
             }
         }

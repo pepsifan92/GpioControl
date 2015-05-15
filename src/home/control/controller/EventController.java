@@ -1,17 +1,26 @@
 package home.control.controller;
 
+import home.control.Exception.PinConfigurationUnauthorisedException;
 import home.control.model.Event;
 import home.control.model.PinConfiguration;
+import home.control.model.Temperature;
+
+import java.io.IOException;
 
 public class EventController {
 
     private PinController pinController;
+    private TemperatureController temperatureController;
 
     public EventController(PinConfiguration pinConfiguration) {
         pinController = new PinController(pinConfiguration);
     }
 
-    public void handleEvent(Event event) {
+    public EventController(Temperature temperature) {
+        temperatureController = new TemperatureController(temperature);
+    }
+
+    public void handleEvent(Event event) throws PinConfigurationUnauthorisedException, IOException {
         switch (event) {
             case SET:
                 pinController.set();
@@ -30,6 +39,9 @@ public class EventController {
                 break;
             case INPUT:
 
+                break;
+            case TEMP:
+                temperatureController.sendTemperature();
                 break;
             case SHUTDOWN:
 

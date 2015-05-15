@@ -12,11 +12,12 @@ import home.control.controller.PinController;
 import home.control.controller.ThreadController;
 import home.control.model.Event;
 import home.control.model.PinConfiguration;
+import home.control.model.Temperature;
 import org.java_websocket.WebSocket;
 import org.java_websocket.server.WebSocketServer;
 
 public class Main {
-	private static final String HOST = "123.123.123.63";
+	private static final String HOST = "123.123.123.31";
 	private static final int PORT = 1234;
 
 	private static WebSocketServer server;
@@ -28,13 +29,17 @@ public class Main {
 
 	private static void generateDummyJsonObjects() {
 		Gson gson = new Gson();
-		PinConfiguration pinConfiguration = new PinConfiguration(Event.FADE, 0, 5000, 100, 0, true, 3, 0);
+		PinConfiguration pinConfiguration = new PinConfiguration(Event.FADE, 0, 1000, 100, 0, true, 3, 0);
+		Temperature temperature = new Temperature("28-00044a7273ff");
 		System.out.println(gson.toJson(pinConfiguration));
+		System.out.println(gson.toJson(temperature));
 	}
 
 	private static void initServer() throws Exception {
 
 		System.out.println("Starting server...");
+
+		new Config();
 
 		new ThreadController();
 

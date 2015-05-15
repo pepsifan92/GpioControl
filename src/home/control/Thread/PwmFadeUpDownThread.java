@@ -4,16 +4,15 @@ import com.pi4j.wiringpi.Gpio;
 import com.pi4j.wiringpi.SoftPwm;
 import home.control.Config;
 import home.control.Server;
-import home.control.controller.ThreadController;
 import home.control.model.PinConfiguration;
 
-public class PwmFadeThread extends Thread{
+public class PwmFadeUpDownThread extends Thread {
 
     private PinConfiguration conf;
-    private volatile boolean isRunning = true; //"You really should make it volatile. There are no synchronization problems, then."
+    private volatile boolean isRunning = true;
     private long stepPause;
 
-    public PwmFadeThread(PinConfiguration conf) {
+    public PwmFadeUpDownThread(PinConfiguration conf) {
         this.conf = conf;
         stepPause = conf.getCycleDuration() / Math.abs(conf.getEndVal() - conf.getStartVal());
     }
@@ -31,13 +30,14 @@ public class PwmFadeThread extends Thread{
             for (int i = 0; i < conf.getCycles(); i++) {
                 if (!isRunning) { break; }
                 pwmLoop();
-                pause(conf.getCyclePause()); //Pause between the cycles
+                pause(conf.getCyclePause());
+                pwmLoopReverse();
             }
         } else {
             pwmLoop();
+            pause(conf.getCyclePause());
+            pwmLoopReverse();
         }
-
-        ThreadController.remove(Thread.currentThread());
     }
 
     private void pwmLoop() {
@@ -50,8 +50,16 @@ public class PwmFadeThread extends Thread{
 
     }
 
+    private void pwmLoopReverse() {
+        if (conf.getStartVal() < conf.getEndVal()) {
+            fadeDown();
+        } else  {
+            fadeUp();
+        }
+    }
+
     private void fadeUp() {
-        for (int i = conf.getStartVal(); i < conf.getEndVal() ; i++) {
+        for (int i = conf.getStartVal(); i < conf.getEndVal(); i++) {
             if (!isRunning) { break; }
             fade(i);
         }
@@ -59,7 +67,7 @@ public class PwmFadeThread extends Thread{
     }
 
     private void fadeDown() {
-        for (int i = conf.getStartVal(); i > conf.getEndVal(); i--) {
+        for (int i = conf.getStartVal(); i > conf.getEndVal(); i++) {
             if (!isRunning) { break; }
             fade(i);
         }
@@ -68,7 +76,7 @@ public class PwmFadeThread extends Thread{
 
     private void fade(int i) {
         SoftPwm.softPwmWrite(conf.getNumber(), i);
-        pause(stepPause);
+
     }
 
     private void pause(long pause) {
@@ -76,10 +84,8 @@ public class PwmFadeThread extends Thread{
             Thread.sleep(pause);
         } catch (InterruptedException e) {
             System.out.println("Interrupting Thread");
-            //Thread.currentThread().interrupt();
-            // FUCK THE EXCEPTION!
-//            e.printStackTrace();
         }
     }
+
 
 }

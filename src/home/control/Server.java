@@ -2,8 +2,10 @@ package home.control;
 import java.net.InetSocketAddress;
 import java.util.logging.Logger;
 
+import home.control.Exception.PinConfigurationUnauthorisedException;
 import home.control.controller.EventController;
 import home.control.model.PinConfiguration;
+import home.control.model.Temperature;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
@@ -35,12 +37,38 @@ public class Server extends WebSocketServer {
     @Override
     public void onMessage(WebSocket socket, String message) {
         long startMillis = System.currentTimeMillis();
-        System.out.println("received message from " + socket.getRemoteSocketAddress() + ": " + message);
+        System.out.println("Received message from " + socket.getRemoteSocketAddress() + ": " + message);
     	System.out.println("Incoming Message: " + message);
 
-        PinConfiguration pinConfiguration = gson.fromJson(message, PinConfiguration.class);
-        EventController eventController = new EventController(pinConfiguration);
-        eventController.handleEvent(pinConfiguration.getEvent());
+        PinConfiguration pinConfiguration = null;
+        Temperature temperature = null;
+
+        try {
+            pinConfiguration = gson.fromJson(message, PinConfiguration.class);
+        } catch (Exception e) {
+            System.out.println("No PinConfiguration send");
+        }
+
+        if (pinConfiguration.getNumber() == -1) {
+            try {
+                temperature = gson.fromJson(message, Temperature.class);
+            } catch (Exception e) {
+                System.out.println("No Temperature send");
+            }
+        }
+
+        try {
+            if (pinConfiguration.getNumber() != -1) {
+                EventController eventController = new EventController(pinConfiguration);
+                eventController.handleEvent(pinConfiguration.getEvent());
+            } else if (temperature != null) {
+                EventController eventController = new EventController(temperature);
+                eventController.handleEvent(temperature.getEvent());
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         long endMillis = System.currentTimeMillis();
         long timeNeeded = endMillis - startMillis;
