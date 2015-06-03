@@ -53,7 +53,7 @@ public class PinConfiguration {
     /**
      *
      * @param event Event to run
-     * @param number the number of the Pi
+     * @param number the number of the Pin
      * @param cycleDuration How long should a cycle (one repeating) last
      * @param startVal start value for the PWM fader
      * @param endVal end value of the PWM fader
