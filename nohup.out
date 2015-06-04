@@ -1,0 +1,8 @@
+{"event":"FADE","number":0,"debounce":0,"pwmValue":0,"outputHigh":false,"cycleDuration":1000,"uptime":0,"downtime":0,"startVal":100,"endVal":0,"repeat":true,"cycles":3,"cyclePause":0}
+{"event":"TEMP","deviceId":"28-00044a7273ff","timeStamp":0,"temperature":0}
+Starting server...
+Server started on 123.123.123.31:1234
+q - quit server 
+s - show connections 
+t - show threads
+Stopping server...

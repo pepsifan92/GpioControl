@@ -17,10 +17,12 @@ public class Server extends WebSocketServer {
 	private Gson gson;
 
     public static WebSocket socket;
+    public static PCA9685PwmControl pca;
 
 	public Server(InetSocketAddress address) {
 		super(address);
         gson = new Gson();
+        pca = new PCA9685PwmControl(0x40);
 	}
 
     @Override

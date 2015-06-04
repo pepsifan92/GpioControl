@@ -22,6 +22,7 @@ public class Main {
 
 	private static WebSocketServer server;
 
+
 	public static void main(String[] args) throws Exception {
 		generateDummyJsonObjects();
 		initServer();
