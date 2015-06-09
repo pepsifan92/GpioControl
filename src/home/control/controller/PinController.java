@@ -22,7 +22,7 @@ public class PinController {
 
 	private void checkPwmPinAllowed() throws PinConfigurationUnauthorisedException {
 		for (PinConfiguration allowedConf : Config.allowedPwmPins) {
-			System.out.println("allowedConfPin: " + allowedConf.getNumber());
+			//System.out.println("allowedConfPin: " + allowedConf.getNumber());
 			if (allowedConf.getNumber() == conf.getNumber()) {
 				return;
 			}

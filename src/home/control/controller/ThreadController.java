@@ -37,7 +37,7 @@ public class ThreadController {
         while (iter.hasNext()) {
             Thread thread = iter.next();
             if (thread.getName().equals("" + number)) {
-                System.out.println("Killing Thread Running on Pin " + number);
+                //System.out.println("Killing Thread Running on Pin " + number);
                 if (thread instanceof PwmFadeThread) {
                     ((PwmFadeThread) thread).kill();
                 } else if (thread instanceof PwmFadeUpDownThread) {

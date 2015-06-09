@@ -38,7 +38,6 @@ public class PwmFadeThread extends Thread{
         } else {
             pwmLoop();
         }
-
         ThreadController.remove(Thread.currentThread());
     }
 
@@ -55,7 +54,7 @@ public class PwmFadeThread extends Thread{
             if (!isRunning) { break; }
             fade(i);
         }
-        Server.socket.send("Fading Up Message from Server");
+        //Server.socket.send("Fading Up Message from Server");
     }
 
 
@@ -64,7 +63,7 @@ public class PwmFadeThread extends Thread{
             if (!isRunning) { break; }
             fade(i);
         }
-        Server.socket.send("Fading Down Message from Server");
+        //Server.socket.send("Fading Down Message from Server");
     }
 
     private void fade(int i) {

@@ -2,6 +2,7 @@ package home.control;
 import java.net.InetSocketAddress;
 import java.util.logging.Logger;
 
+import com.pi4j.io.gpio.Pin;
 import home.control.controller.EventController;
 import home.control.controller.PCA9685PwmControl;
 import home.control.model.PinConfiguration;
@@ -40,35 +41,41 @@ public class Server extends WebSocketServer {
     public void onMessage(WebSocket socket, String message) {
         long startMillis = System.currentTimeMillis();
         System.out.println("Received message from " + socket.getRemoteSocketAddress() + ": " + message);
-    	System.out.println("Incoming Message: " + message);
+    	//System.out.println("Incoming Message: " + message);
 
         PinConfiguration pinConfiguration = null;
         Temperature temperature = null;
+        boolean isPinConfiguration = false;
 
         try {
-            pinConfiguration = new PinConfiguration(gson.fromJson(message, PinConfiguration.class));
+            if(gson.fromJson(message, PinConfiguration.class).getNumber() != -1){
+                isPinConfiguration = true;
+                pinConfiguration = new PinConfiguration(gson.fromJson(message, PinConfiguration.class));
+            } else {
+                System.out.println("No PinConfiguration send");
+            }
         } catch (Exception e) {
-            System.out.println("No PinConfiguration send");
+            System.out.println("Exception: No PinConfiguration send");
         }
 
-        if (pinConfiguration.getNumber() == -1) {
+        if (!isPinConfiguration) {
             try {
                 temperature = gson.fromJson(message, Temperature.class);
             } catch (Exception e) {
-                System.out.println("No Temperature send");
+                System.out.println("Exception: No Temperature send");
             }
         }
 
         try {
-            if (pinConfiguration.getNumber() != -1) {
+            if (isPinConfiguration) {
                 EventController eventController = new EventController(pinConfiguration);
                 eventController.handleEvent(pinConfiguration.getEvent());
             } else if (temperature != null) {
                 EventController eventController = new EventController(temperature);
                 eventController.handleEvent(temperature.getEvent());
             }
-
         } catch (Exception e) {
+            System.out.println("No PinConfiguration or Temperature send");
             e.printStackTrace();
         }
 

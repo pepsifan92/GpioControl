@@ -65,7 +65,7 @@ public class PwmFadeUpDownThread extends Thread {
             if (!isRunning) { break; }
             fade(i);
         }
-        Server.socket.send("Fading Up Message from Server");
+        //Server.socket.send("Fading Up Message from Server");
     }
 
 
@@ -74,7 +74,7 @@ public class PwmFadeUpDownThread extends Thread {
             if (!isRunning) { break; }
             fade(i);
         }
-        Server.socket.send("Fading Down Message from Server");
+        //Server.socket.send("Fading Down Message from Server");
     }
 
     private void fade(int i) {

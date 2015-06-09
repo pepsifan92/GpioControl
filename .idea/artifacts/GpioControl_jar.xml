@@ -1,5 +1,5 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="GpioControl:jar">
+  <artifact type="jar" build-on-make="true" name="GpioControl:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/GpioControl_jar</output-path>
     <root id="archive" name="GpioControl.jar">
       <element id="module-output" name="GpioControl" />

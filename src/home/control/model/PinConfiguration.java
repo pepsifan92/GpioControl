@@ -22,6 +22,8 @@ public class PinConfiguration {
     private int cycles;
     private long cyclePause;
 
+    public PinConfiguration() {}
+
     public PinConfiguration(PinConfiguration pinConfig) {
         this.event = pinConfig.event;
         this.number = pinConfig.number;
