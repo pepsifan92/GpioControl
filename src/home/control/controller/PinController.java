@@ -6,6 +6,7 @@ import com.pi4j.wiringpi.SoftPwm;
 import home.control.Config;
 import home.control.Exception.PinConfigurationUnauthorisedException;
 import home.control.Server;
+import home.control.Thread.PwmBlinkThread;
 import home.control.Thread.PwmFadeThread;
 import home.control.Thread.PwmFadeUpDownThread;
 import home.control.model.NaturalFading;
@@ -40,6 +41,7 @@ public class PinController {
 
 	public void set() throws PinConfigurationUnauthorisedException {
 		checkSetPinAllowed();
+		ThreadController.interruptThreadWhenRunningOnPin(conf.getNumber());
 		if(conf.getNumber() < 100) {
 			Gpio.pinMode(conf.getNumber(), Gpio.OUTPUT);
 			Gpio.digitalWrite(conf.getNumber(), conf.isOutputHigh());
@@ -54,6 +56,7 @@ public class PinController {
 
 	public void dim() throws PinConfigurationUnauthorisedException {
 		checkPwmPinAllowed();
+		ThreadController.interruptThreadWhenRunningOnPin(conf.getNumber());
 		if(conf.getNumber() < 100) {
 			Gpio.pinMode(conf.getNumber(), Gpio.OUTPUT);
 			SoftPwm.softPwmCreate(conf.getNumber(), conf.getPwmValue(), Config.PWM_RANGE);
@@ -76,8 +79,11 @@ public class PinController {
 		ThreadController.addAndStart(thread, conf);
 	}
 
-	public void blink() {
-
+	public void blink() throws PinConfigurationUnauthorisedException {
+		checkPwmPinAllowed();
+		//Selection of Board (PCA9685) inside thread
+		Thread thread = new PwmBlinkThread(conf);
+		ThreadController.addAndStart(thread, conf);
 	}
 
 }

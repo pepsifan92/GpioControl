@@ -1,5 +1,6 @@
 package home.control.controller;
 
+import home.control.Thread.PwmBlinkThread;
 import home.control.Thread.PwmFadeThread;
 import home.control.Thread.PwmFadeUpDownThread;
 import home.control.model.PinConfiguration;
@@ -31,18 +32,20 @@ public class ThreadController {
         runningThreads.remove(thread);
     }
 
-    private static void interruptThreadWhenRunningOnPin(int number) {
+    public static void interruptThreadWhenRunningOnPin(int number) {
         Iterator<Thread> iter = runningThreads.iterator();
         while (iter.hasNext()) {
             Thread thread = iter.next();
             if (thread.getName().equals("" + number)) {
                 System.out.println("Killing Thread Running on Pin " + number);
-                iter.remove();
                 if (thread instanceof PwmFadeThread) {
                     ((PwmFadeThread) thread).kill();
                 } else if (thread instanceof PwmFadeUpDownThread) {
                     ((PwmFadeUpDownThread) thread).kill();
+                } else if (thread instanceof PwmBlinkThread) {
+                    ((PwmBlinkThread) thread).kill();
                 }
+                iter.remove();
             }
         }
     }
