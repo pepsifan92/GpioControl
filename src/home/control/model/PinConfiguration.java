@@ -1,6 +1,11 @@
 package home.control.model;
 
+import com.pi4j.io.gpio.Pin;
+
 public class PinConfiguration {
+
+    private final int PWM_OFF_VALUE = 0;
+    private final int PWM_MAX_VALUE = 100;
 
     private Event event;
     private int number = -1;
@@ -17,10 +22,22 @@ public class PinConfiguration {
     private int cycles;
     private long cyclePause;
 
-    public PinConfiguration() {
-        //System.out.println("Default Constructor");
+    public PinConfiguration(PinConfiguration pinConfig) {
+        this.event = pinConfig.event;
+        this.number = pinConfig.number;
+        this.name = pinConfig.name;
+        this.debounce = pinConfig.debounce;
+        this.pwmValue = pinConfig.pwmValue;
+        this.outputHigh = pinConfig.outputHigh;
+        this.cycleDuration = pinConfig.cycleDuration;
+        this.uptime = pinConfig.uptime;
+        this.downtime = pinConfig.downtime;
+        this.startVal = correctPwmValue(pinConfig.startVal);
+        this.endVal = correctPwmValue(pinConfig.endVal);
+        this.repeat = pinConfig.repeat;
+        this.cycles = pinConfig.cycles;
+        this.cyclePause = pinConfig.cyclePause;
     }
-
 
     public PinConfiguration(int number) {
         this.number = number;
@@ -47,7 +64,7 @@ public class PinConfiguration {
     public PinConfiguration(Event event, int number, int pwmValue) {
         this.event = event;
         this.number = number;
-        this.pwmValue = pwmValue;
+        this.pwmValue = correctPwmValue(pwmValue);
     }
 
     /**
@@ -65,8 +82,8 @@ public class PinConfiguration {
         this.event = event;
         this.number = number;
         this.cycleDuration = cycleDuration;
-        this.startVal = startVal;
-        this.endVal = endVal;
+        this.startVal = correctPwmValue(startVal);
+        this.endVal = correctPwmValue(endVal);
         this.repeat = repeat;
         this.cycles = cycles;
         this.cyclePause = cyclePause;
@@ -182,5 +199,15 @@ public class PinConfiguration {
 
     public void setCyclePause(long cyclePause) {
         this.cyclePause = cyclePause;
+    }
+
+    public int correctPwmValue(int value){
+        if(value > PWM_MAX_VALUE){
+            return PWM_MAX_VALUE;
+        } else if (value < PWM_OFF_VALUE) {
+            return PWM_OFF_VALUE;
+        } else {
+            return value;
+        }
     }
 }

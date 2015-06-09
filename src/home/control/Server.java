@@ -2,8 +2,8 @@ package home.control;
 import java.net.InetSocketAddress;
 import java.util.logging.Logger;
 
-import home.control.Exception.PinConfigurationUnauthorisedException;
 import home.control.controller.EventController;
+import home.control.controller.PCA9685PwmControl;
 import home.control.model.PinConfiguration;
 import home.control.model.Temperature;
 import org.java_websocket.WebSocket;
@@ -46,7 +46,7 @@ public class Server extends WebSocketServer {
         Temperature temperature = null;
 
         try {
-            pinConfiguration = gson.fromJson(message, PinConfiguration.class);
+            pinConfiguration = new PinConfiguration(gson.fromJson(message, PinConfiguration.class));
         } catch (Exception e) {
             System.out.println("No PinConfiguration send");
         }

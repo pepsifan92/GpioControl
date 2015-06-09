@@ -3,9 +3,7 @@ package home.control.Thread;
 import com.pi4j.gpio.extension.pca.PCA9685Pin;
 import com.pi4j.wiringpi.Gpio;
 import com.pi4j.wiringpi.SoftPwm;
-import com.sun.deploy.pings.Pings;
 import home.control.Config;
-import home.control.PCA9685PwmControl;
 import home.control.Server;
 import home.control.controller.ThreadController;
 import home.control.model.NaturalFading;
@@ -19,7 +17,7 @@ public class PwmFadeThread extends Thread{
 
     public PwmFadeThread(PinConfiguration conf) {
         this.conf = conf;
-        stepPause = conf.getCycleDuration() / Math.abs(conf.getEndVal() - conf.getStartVal());
+        this.stepPause = calculateStepPause();
     }
 
     public void kill() {
@@ -45,25 +43,24 @@ public class PwmFadeThread extends Thread{
     }
 
     private void pwmLoop() {
-
         if (conf.getStartVal() < conf.getEndVal()) {
             fadeUp();
         } else {
             fadeDown();
         }
-
     }
 
     private void fadeUp() {
-        for (int i = conf.getStartVal(); i < conf.getEndVal() ; i++) {
+        for (int i = conf.getStartVal(); i <= conf.getEndVal() ; i = i+stepSize()) {
             if (!isRunning) { break; }
             fade(i);
         }
         Server.socket.send("Fading Up Message from Server");
     }
 
+
     private void fadeDown() {
-        for (int i = conf.getStartVal(); i > conf.getEndVal(); i--) {
+        for (int i = conf.getStartVal(); i >= conf.getEndVal(); i = i-stepSize()) {
             if (!isRunning) { break; }
             fade(i);
         }
@@ -73,17 +70,17 @@ public class PwmFadeThread extends Thread{
     private void fade(int i) {
         //Number 100-115 means the pins of a I2C PWM-PortExpander PCA9685 (16 Channel(=16 Pins))
         //100 = PWM_00; 101 = PWM_01; ... ; 115 = PWM_15
-        if(conf.getNumber() < 100) {
+        if (conf.getNumber() < 100) {
             SoftPwm.softPwmWrite(conf.getNumber(), i);
         } else {
-            setPCAPinPwm(i);
+            setPCAPinPwm(conf.getNumber(), NaturalFading.STEPS_100[i]);
         }
-        pause(stepPause);
+        pause(stepPause * stepSize()); //Needed to match to the perhaps higher stepSize in the fade-loops (in fadeUp and fadeDown).
     }
 
     //Defines which pin of the PCA9685 is set for the given PinNumber.
-    private void setPCAPinPwm(int value){
-        switch(conf.getNumber()){
+    private void setPCAPinPwm(int number, int value){
+        switch(number){
             case 100: Server.pca.setPwm(PCA9685Pin.PWM_00, value); break;
             case 101: Server.pca.setPwm(PCA9685Pin.PWM_01, value); break;
             case 102: Server.pca.setPwm(PCA9685Pin.PWM_02, value); break;
@@ -104,6 +101,25 @@ public class PwmFadeThread extends Thread{
         }
     }
 
+    /**
+     * returns the step size for fading-loops, based on stepPause value.
+     * If the pause between the steps (calculated in constructor with cycleDuration time, start- and endvalue)
+     * is small, the PWM-set-steps can be bigger without a visual effect but with a great reduce of pwm set interval.
+     * This should enhance the performance.
+     * @return
+     */
+    private int stepSize() {
+        if(stepPause <= 10 && stepPause > 5){
+            return 2;
+        } else if (stepPause <= 5 && stepPause > 2) {
+            return 5;
+        } else if (stepPause <= 2) {
+            return 10;
+        } else {
+            return 1;
+        }
+    }
+
     private void pause(long pause) {
         try {
             Thread.sleep(pause);
@@ -115,4 +131,12 @@ public class PwmFadeThread extends Thread{
         }
     }
 
+    private long calculateStepPause(){
+        if(conf.getEndVal() - conf.getStartVal() != 0) { //Ok
+            return conf.getCycleDuration() / Math.abs(conf.getEndVal() - conf.getStartVal());
+        } else { //Prevent division by zero
+            System.err.println("PwmFadeThread:EndVal-StartVal=0. Choose valid values! (stepPause will be set to 10)");
+            return 10;
+        }
+    }
 }

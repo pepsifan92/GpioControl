@@ -11,13 +11,13 @@ public class Config {
     public static  List<PinConfiguration> allowedPwmPins = new ArrayList<>();
     public static  List<PinConfiguration> allowedSetPins = new ArrayList<>();
 
-    private final int[] ALLOWED_PWM_PIN_NUMS = { 5, 6, 10, 11, 26, 27, 28, 29 };
+    private final int[] ALLOWED_PWM_PIN_NUMS = { 5, 6, 10, 11, 26, 27, 28, 29, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115};
     private final int[] ALLOWED_SET_PIN_NUMS = { 0, 2, 3, 4, 12 };
 
     public Config() {
         allowedPwmPins = generatePinConfigurations(ALLOWED_PWM_PIN_NUMS);
         allowedSetPins = generatePinConfigurations(ALLOWED_SET_PIN_NUMS);
-        allowedSetPins.addAll(allowedPwmPins); // Because PWM Pins are allowed to get set
+        allowedSetPins.addAll(allowedPwmPins); // Because PWM Pins are also allowed to be SET
     }
 
     private List<PinConfiguration> generatePinConfigurations(int[] nums) {
