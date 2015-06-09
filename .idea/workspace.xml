@@ -32,22 +32,16 @@
         <entry file="file://$PROJECT_DIR$/src/home/control/controller/PCA9685PwmControl.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="53" column="22" selection-start-line="53" selection-start-column="22" selection-end-line="53" selection-end-column="22" />
+              <caret line="19" column="65" selection-start-line="19" selection-start-column="65" selection-end-line="19" selection-end-column="65" />
               <folding>
-                <element signature="e#0#4818#0" expanded="true" />
                 <element signature="imports" expanded="true" />
+                <element signature="method#setPwm#0;class#PCA9685PwmControl#0" expanded="false" />
+                <element signature="method#setAllPinsOn#0;class#PCA9685PwmControl#0" expanded="false" />
+                <element signature="method#setAllPinsOff#0;class#PCA9685PwmControl#0" expanded="false" />
+                <element signature="method#setAllPinsPwm#0;class#PCA9685PwmControl#0" expanded="false" />
+                <element signature="method#correctPwmValue#0;class#PCA9685PwmControl#0" expanded="false" />
                 <element signature="method#setAllPinsAsOutput#0;class#PCA9685PwmControl#0" expanded="false" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PinController.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/home/control/controller/PinController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="19" column="68" selection-start-line="19" selection-start-column="68" selection-end-line="19" selection-end-column="68" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -56,7 +50,17 @@
         <entry file="file://$PROJECT_DIR$/src/home/control/Config.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="23" column="69" selection-start-line="23" selection-start-column="69" selection-end-line="23" selection-end-column="69" />
+              <caret line="30" column="5" selection-start-line="30" selection-start-column="5" selection-end-line="30" selection-end-column="5" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PinController.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/home/control/controller/PinController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.5808678">
+              <caret line="64" column="69" selection-start-line="64" selection-start-column="69" selection-end-line="64" selection-end-column="69" />
               <folding />
             </state>
           </provider>
@@ -66,61 +70,15 @@
         <entry file="file://$PROJECT_DIR$/src/home/control/Thread/PwmFadeThread.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="65" column="9" selection-start-line="65" selection-start-column="9" selection-end-line="65" selection-end-column="9" />
+              <caret line="15" column="27" selection-start-line="15" selection-start-column="27" selection-end-line="15" selection-end-column="27" />
               <folding>
                 <element signature="e#726#727#0" expanded="true" />
                 <element signature="e#759#760#0" expanded="true" />
-                <element signature="method#setPCAPinPwm#0;class#PwmFadeThread#0" expanded="false" />
                 <element signature="docComment;method#stepSize#0;class#PwmFadeThread#0" expanded="false" />
                 <element signature="method#stepSize#0;class#PwmFadeThread#0" expanded="false" />
                 <element signature="method#pause#0;class#PwmFadeThread#0" expanded="false" />
+                <element signature="method#calculateStepPause#0;class#PwmFadeThread#0" expanded="false" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PinConfiguration.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/home/control/model/PinConfiguration.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="30" column="47" selection-start-line="30" selection-start-column="47" selection-end-line="30" selection-end-column="47" />
-              <folding>
-                <element signature="e#1295#1296#0" expanded="true" />
-                <element signature="e#1331#1332#0" expanded="true" />
-                <element signature="e#2850#2851#0" expanded="true" />
-                <element signature="e#2878#2879#0" expanded="true" />
-                <element signature="method#correctPwmValue#0;class#PinConfiguration#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="NaturalFading.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/home/control/model/NaturalFading.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.31854042">
-              <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Server.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/home/control/Server.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="31" column="5" selection-start-line="31" selection-start-column="5" selection-end-line="31" selection-end-column="5" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="EventController.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/home/control/controller/EventController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="28" column="32" selection-start-line="28" selection-start-column="32" selection-end-line="28" selection-end-column="32" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -172,7 +130,6 @@
         <option value="$PROJECT_DIR$/src/home/control/controller/GpioController.java" />
         <option value="$PROJECT_DIR$/src/home/control/Runnable/PwmFadeRunnable.java" />
         <option value="$PROJECT_DIR$/src/home/control/Exception/PinConfigurationUnauthorisedException.java" />
-        <option value="$PROJECT_DIR$/src/home/control/controller/PinController.java" />
         <option value="$PROJECT_DIR$/src/home/control/model/Event.java" />
         <option value="$PROJECT_DIR$/src/home/control/controller/EventController.java" />
         <option value="$PROJECT_DIR$/src/home/control/model/Temperature.java" />
@@ -184,12 +141,13 @@
         <option value="//PI-MAIN/pi-main-opt/pi4j/examples/PCA9685GpioExampleTEST.java" />
         <option value="$PROJECT_DIR$/src/home/control/Main.java" />
         <option value="$PROJECT_DIR$/src/home/control/PCA9685PwmControl.java" />
-        <option value="$PROJECT_DIR$/src/home/control/controller/PCA9685PwmControl.java" />
-        <option value="$PROJECT_DIR$/src/home/control/Config.java" />
-        <option value="$PROJECT_DIR$/src/home/control/model/PinConfiguration.java" />
-        <option value="$PROJECT_DIR$/src/home/control/Thread/PwmFadeThread.java" />
         <option value="$PROJECT_DIR$/src/home/control/Server.java" />
         <option value="$PROJECT_DIR$/src/home/control/model/NaturalFading.java" />
+        <option value="$PROJECT_DIR$/src/home/control/Config.java" />
+        <option value="$PROJECT_DIR$/src/home/control/Thread/PwmFadeThread.java" />
+        <option value="$PROJECT_DIR$/src/home/control/controller/PCA9685PwmControl.java" />
+        <option value="$PROJECT_DIR$/src/home/control/controller/PinController.java" />
+        <option value="$PROJECT_DIR$/src/home/control/model/PinConfiguration.java" />
       </list>
     </option>
   </component>
@@ -706,12 +664,12 @@
       <workItem from="1433318475247" duration="7059000" />
       <workItem from="1433328434647" duration="8957000" />
       <workItem from="1433445152454" duration="2020000" />
-      <workItem from="1433798984797" duration="9995000" />
+      <workItem from="1433798984797" duration="14458000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="193976000" />
+    <option name="totallyTimeSpent" value="198439000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1176" extended-state="6" />
@@ -756,7 +714,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="24" />
+      <option name="time" value="25" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -1146,13 +1104,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/home/control/controller/PwmController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_40/src.zip!/java/lang/Thread.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33301708">
@@ -1199,41 +1150,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/home/control/Config.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="23" column="69" selection-start-line="23" selection-start-column="69" selection-end-line="23" selection-end-column="69" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/home/control/controller/ThreadController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.234714">
           <caret line="22" column="23" selection-start-line="22" selection-start-column="23" selection-end-line="22" selection-end-column="23" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/home/control/controller/EventController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="28" column="32" selection-start-line="28" selection-start-column="32" selection-end-line="28" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/home/control/model/PinConfiguration.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="30" column="47" selection-start-line="30" selection-start-column="47" selection-end-line="30" selection-end-column="47" />
-          <folding>
-            <element signature="e#1295#1296#0" expanded="true" />
-            <element signature="e#1331#1332#0" expanded="true" />
-            <element signature="e#2850#2851#0" expanded="true" />
-            <element signature="e#2878#2879#0" expanded="true" />
-            <element signature="method#correctPwmValue#0;class#PinConfiguration#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1245,10 +1166,58 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/home/control/controller/PinController.java">
+    <entry file="file://$PROJECT_DIR$/src/home/control/model/NaturalFading.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.31854042">
+          <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/home/control/Server.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.32051283">
+          <caret line="31" column="5" selection-start-line="31" selection-start-column="5" selection-end-line="31" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/home/control/controller/EventController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.31854042">
+          <caret line="28" column="32" selection-start-line="28" selection-start-column="32" selection-end-line="28" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/home/control/Config.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="19" column="68" selection-start-line="19" selection-start-column="68" selection-end-line="19" selection-end-column="68" />
+          <caret line="30" column="5" selection-start-line="30" selection-start-column="5" selection-end-line="30" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/home/control/controller/PCA9685PwmControl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="19" column="65" selection-start-line="19" selection-start-column="65" selection-end-line="19" selection-end-column="65" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#setPwm#0;class#PCA9685PwmControl#0" expanded="false" />
+            <element signature="method#setAllPinsOn#0;class#PCA9685PwmControl#0" expanded="false" />
+            <element signature="method#setAllPinsOff#0;class#PCA9685PwmControl#0" expanded="false" />
+            <element signature="method#setAllPinsPwm#0;class#PCA9685PwmControl#0" expanded="false" />
+            <element signature="method#correctPwmValue#0;class#PCA9685PwmControl#0" expanded="false" />
+            <element signature="method#setAllPinsAsOutput#0;class#PCA9685PwmControl#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/home/control/model/PinConfiguration.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.9003945">
+          <caret line="212" column="9" selection-start-line="212" selection-start-column="9" selection-end-line="212" selection-end-column="9" />
           <folding />
         </state>
       </provider>
@@ -1256,42 +1225,22 @@
     <entry file="file://$PROJECT_DIR$/src/home/control/Thread/PwmFadeThread.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="65" column="9" selection-start-line="65" selection-start-column="9" selection-end-line="65" selection-end-column="9" />
+          <caret line="15" column="27" selection-start-line="15" selection-start-column="27" selection-end-line="15" selection-end-column="27" />
           <folding>
             <element signature="e#726#727#0" expanded="true" />
             <element signature="e#759#760#0" expanded="true" />
-            <element signature="method#setPCAPinPwm#0;class#PwmFadeThread#0" expanded="false" />
             <element signature="docComment;method#stepSize#0;class#PwmFadeThread#0" expanded="false" />
             <element signature="method#stepSize#0;class#PwmFadeThread#0" expanded="false" />
             <element signature="method#pause#0;class#PwmFadeThread#0" expanded="false" />
+            <element signature="method#calculateStepPause#0;class#PwmFadeThread#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/home/control/controller/PCA9685PwmControl.java">
+    <entry file="file://$PROJECT_DIR$/src/home/control/controller/PinController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="53" column="22" selection-start-line="53" selection-start-column="22" selection-end-line="53" selection-end-column="22" />
-          <folding>
-            <element signature="e#0#4818#0" expanded="true" />
-            <element signature="imports" expanded="true" />
-            <element signature="method#setAllPinsAsOutput#0;class#PCA9685PwmControl#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/home/control/Server.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="31" column="5" selection-start-line="31" selection-start-column="5" selection-end-line="31" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/home/control/model/NaturalFading.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.31854042">
-          <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.5808678">
+          <caret line="64" column="69" selection-start-line="64" selection-start-column="69" selection-end-line="64" selection-end-column="69" />
           <folding />
         </state>
       </provider>

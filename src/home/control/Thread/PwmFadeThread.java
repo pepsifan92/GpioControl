@@ -73,32 +73,9 @@ public class PwmFadeThread extends Thread{
         if (conf.getNumber() < 100) {
             SoftPwm.softPwmWrite(conf.getNumber(), i);
         } else {
-            setPCAPinPwm(conf.getNumber(), NaturalFading.STEPS_100[i]);
+            Server.pca.setPwm(PCA9685Pin.ALL[conf.getNumber()-100], NaturalFading.STEPS_100[i]); //Example: PinNumber 104 should fire on Pin 04 of the PCA9685.
         }
         pause(stepPause * stepSize()); //Needed to match to the perhaps higher stepSize in the fade-loops (in fadeUp and fadeDown).
-    }
-
-    //Defines which pin of the PCA9685 is set for the given PinNumber.
-    private void setPCAPinPwm(int number, int value){
-        switch(number){
-            case 100: Server.pca.setPwm(PCA9685Pin.PWM_00, value); break;
-            case 101: Server.pca.setPwm(PCA9685Pin.PWM_01, value); break;
-            case 102: Server.pca.setPwm(PCA9685Pin.PWM_02, value); break;
-            case 103: Server.pca.setPwm(PCA9685Pin.PWM_03, value); break;
-            case 104: Server.pca.setPwm(PCA9685Pin.PWM_04, value); break;
-            case 105: Server.pca.setPwm(PCA9685Pin.PWM_05, value); break;
-            case 106: Server.pca.setPwm(PCA9685Pin.PWM_06, value); break;
-            case 107: Server.pca.setPwm(PCA9685Pin.PWM_07, value); break;
-            case 108: Server.pca.setPwm(PCA9685Pin.PWM_08, value); break;
-            case 109: Server.pca.setPwm(PCA9685Pin.PWM_09, value); break;
-            case 110: Server.pca.setPwm(PCA9685Pin.PWM_10, value); break;
-            case 111: Server.pca.setPwm(PCA9685Pin.PWM_11, value); break;
-            case 112: Server.pca.setPwm(PCA9685Pin.PWM_12, value); break;
-            case 113: Server.pca.setPwm(PCA9685Pin.PWM_13, value); break;
-            case 114: Server.pca.setPwm(PCA9685Pin.PWM_14, value); break;
-            case 115: Server.pca.setPwm(PCA9685Pin.PWM_15, value); break;
-            default: break;
-        }
     }
 
     /**

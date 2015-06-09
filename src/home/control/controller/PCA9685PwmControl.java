@@ -46,7 +46,7 @@ import com.pi4j.io.i2c.I2CFactory;
 public class PCA9685PwmControl {
     private I2CBus              bus;
     private PCA9685GpioProvider gpioProvider;
-    private final BigDecimal    FREQUENCY = new BigDecimal("500"); //Frequency for PWM. Limit is variable, based on the steps or whatever: 100Hz:4096Steps, 400Hz:2500Steps, 500Hz: 2000Steps. So set PWM_MAX_VALUE to a matching value.
+    private final BigDecimal    FREQUENCY = new BigDecimal("500"); //Frequency for PWM. Limit is variable, based on the steps or whatever: Working: 100Hz:4096Steps, 400Hz:2500Steps, 500Hz: 2000Steps. So set PWM_MAX_VALUE to a matching value.
     private final BigDecimal    FREQUENCY_CORRECTION_FACTOR = new BigDecimal("1"); //For whatever
     private final int           PWM_OFF_VALUE = 0;
     private final int           PWM_MAX_VALUE = 2000;
@@ -62,6 +62,14 @@ public class PCA9685PwmControl {
         setAllPinsAsOutput(gpio);
     }
 
+    public void setOn(Pin pin){
+        gpioProvider.setAlwaysOn(pin);
+    }
+
+    public void setOff(Pin pin){
+        gpioProvider.setAlwaysOff(pin);
+    }
+
     public void setPwm(Pin pin, int value){
         int correctedValue = correctPwmValue(value);
         //This selection is needed to turn completely off, if value is 0. gpioProvider.setPwm(pin, 0) isn't allowed.
@@ -69,6 +77,18 @@ public class PCA9685PwmControl {
             gpioProvider.setAlwaysOff(pin);
         } else {
             gpioProvider.setPwm(pin, value);
+        }
+    }
+
+    public void setAllPinsOn(int value){
+        for (Pin pin : PCA9685Pin.ALL) {
+            gpioProvider.setAlwaysOn(pin);
+        }
+    }
+
+    public void setAllPinsOff(int value){
+        for (Pin pin : PCA9685Pin.ALL) {
+            gpioProvider.setAlwaysOff(pin);
         }
     }
 

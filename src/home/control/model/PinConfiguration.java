@@ -27,7 +27,7 @@ public class PinConfiguration {
         this.number = pinConfig.number;
         this.name = pinConfig.name;
         this.debounce = pinConfig.debounce;
-        this.pwmValue = pinConfig.pwmValue;
+        this.pwmValue = correctPwmValue(pinConfig.pwmValue);
         this.outputHigh = pinConfig.outputHigh;
         this.cycleDuration = pinConfig.cycleDuration;
         this.uptime = pinConfig.uptime;
@@ -203,8 +203,10 @@ public class PinConfiguration {
 
     public int correctPwmValue(int value){
         if(value > PWM_MAX_VALUE){
+            System.err.println("PinConfiguration:correctPwmValue:value to high. Set to " + PWM_MAX_VALUE);
             return PWM_MAX_VALUE;
         } else if (value < PWM_OFF_VALUE) {
+            System.err.println("PinConfiguration:correctPwmValue:value to low. Set to " + PWM_OFF_VALUE);
             return PWM_OFF_VALUE;
         } else {
             return value;
