@@ -3,8 +3,10 @@ import java.net.InetSocketAddress;
 import java.util.logging.Logger;
 
 import com.pi4j.io.gpio.Pin;
+import home.control.Thread.SendTempThread;
 import home.control.controller.EventController;
 import home.control.controller.PCA9685PwmControl;
+import home.control.controller.ThreadController;
 import home.control.model.PinConfiguration;
 import home.control.model.Temperature;
 import org.java_websocket.WebSocket;
@@ -29,6 +31,7 @@ public class Server extends WebSocketServer {
     @Override
     public void onOpen(WebSocket conn, ClientHandshake handshake) {
         socket = conn;
+        setupTemperatureThreads();
         System.out.println("new connection to " + conn.getRemoteSocketAddress());
     }
 
@@ -92,5 +95,18 @@ public class Server extends WebSocketServer {
     		System.err.println("Error by handle Error (method: onError). Exception message: " + excep.getMessage());
     	}
 
+    }
+
+    private void setupTemperatureThreads() {
+        Thread temperatureThread1 = new SendTempThread(10000, new Temperature("28-00044a7273ff")); //First sensor thread, that sends the Temperature continuously
+        Thread temperatureThread2 = new SendTempThread(10000, new Temperature("28-00044a72b1ff")); //Second sensor thread, that sends the Temperature continuously
+        PinConfiguration dummyPinConfig1 = new PinConfiguration(1000);
+        PinConfiguration dummyPinConfig2 = new PinConfiguration(1001);
+
+        ThreadController.interruptThreadWhenRunningOnPin(1000);
+        ThreadController.interruptThreadWhenRunningOnPin(1001);
+
+        ThreadController.addAndStart(temperatureThread1, dummyPinConfig1);
+        ThreadController.addAndStart(temperatureThread2, dummyPinConfig2);
     }
 }

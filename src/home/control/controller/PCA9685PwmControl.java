@@ -80,13 +80,13 @@ public class PCA9685PwmControl {
         }
     }
 
-    public void setAllPinsOn(int value){
+    public void setAllPinsOn(){
         for (Pin pin : PCA9685Pin.ALL) {
             gpioProvider.setAlwaysOn(pin);
         }
     }
 
-    public void setAllPinsOff(int value){
+    public void setAllPinsOff(){
         for (Pin pin : PCA9685Pin.ALL) {
             gpioProvider.setAlwaysOff(pin);
         }

@@ -39,14 +39,31 @@ public class PinController {
 		throw new PinConfigurationUnauthorisedException();
 	}
 
+	private boolean isPinInverted() throws PinConfigurationUnauthorisedException {
+		for (PinConfiguration invertedConf : Config.invertedPins) {
+			if (invertedConf.getNumber() == conf.getNumber()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public void set() throws PinConfigurationUnauthorisedException {
+		boolean tempIsHighConfig;
 		checkSetPinAllowed();
 		ThreadController.interruptThreadWhenRunningOnPin(conf.getNumber());
+
+		if(isPinInverted()){
+			tempIsHighConfig = !conf.isOutputHigh();
+		} else {
+			tempIsHighConfig = conf.isOutputHigh();
+		}
+
 		if(conf.getNumber() < 100) {
 			Gpio.pinMode(conf.getNumber(), Gpio.OUTPUT);
-			Gpio.digitalWrite(conf.getNumber(), conf.isOutputHigh());
+			Gpio.digitalWrite(conf.getNumber(), tempIsHighConfig);
 		} else { //Focus on Pins of the PCA9685 board
-			if(conf.isOutputHigh()){
+			if (tempIsHighConfig) {
 				Server.pca.setOn(PCA9685Pin.ALL[conf.getNumber()-100]);
 			} else {
 				Server.pca.setOff(PCA9685Pin.ALL[conf.getNumber()-100]);
