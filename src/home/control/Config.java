@@ -6,7 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Config {
-    public static final int PWM_RANGE = 100;
+    public static final int     PWM_RANGE = 100;
+    public static final long    TEMPERATURE_SEND_INTERVAL = 30000;
 
     public static  List<PinConfiguration> allowedPwmPins = new ArrayList<>();
     public static  List<PinConfiguration> allowedSetPins = new ArrayList<>();

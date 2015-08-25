@@ -25,8 +25,10 @@ public class PwmFadeUpDownThread extends Thread {
 
     @Override
     public void run() {
-        Gpio.pinMode(conf.getNumber(), Gpio.OUTPUT);
-        SoftPwm.softPwmCreate(conf.getNumber(), 0, Config.PWM_RANGE);
+        if (conf.getNumber() < 100) {
+            Gpio.pinMode(conf.getNumber(), Gpio.OUTPUT);
+            SoftPwm.softPwmCreate(conf.getNumber(), 0, Config.PWM_RANGE);
+        }
 
         if (conf.isRepeat()) {
             for (int i = 0; i < conf.getCycles(); i++) {
@@ -65,7 +67,6 @@ public class PwmFadeUpDownThread extends Thread {
             if (!isRunning) { break; }
             fade(i);
         }
-        //Server.socket.send("Fading Up Message from Server");
     }
 
 
@@ -74,7 +75,6 @@ public class PwmFadeUpDownThread extends Thread {
             if (!isRunning) { break; }
             fade(i);
         }
-        //Server.socket.send("Fading Down Message from Server");
     }
 
     private void fade(int i) {
@@ -85,7 +85,7 @@ public class PwmFadeUpDownThread extends Thread {
         } else {
             Server.pca.setPwm(PCA9685Pin.ALL[conf.getNumber()-100], NaturalFading.STEPS_100[i]); //Example: PinNumber 104 should fire on Pin 04 of the PCA9685.
         }
-        pause(stepPause * stepSize()); //Needed to match to the perhaps higher stepSize in the fade-loops (in fadeUp and fadeDown).
+        pause(stepPause * stepSize()); //Needed to match to the maybe higher stepSize in the fade-loops (in fadeUp and fadeDown).
     }
 
     /**
@@ -93,7 +93,6 @@ public class PwmFadeUpDownThread extends Thread {
      * If the pause between the steps (calculated in constructor with cycleDuration time, start- and endvalue)
      * is small, the PWM-set-steps can be bigger without a visual effect but with a great reduce of pwm set interval.
      * This should enhance the performance.
-     * @return
      */
     private int stepSize() {
         if(stepPause <= 80 && stepPause > 4){

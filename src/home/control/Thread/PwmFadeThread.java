@@ -4,6 +4,7 @@ import com.pi4j.gpio.extension.pca.PCA9685Pin;
 import com.pi4j.wiringpi.Gpio;
 import com.pi4j.wiringpi.SoftPwm;
 import home.control.Config;
+import home.control.Exception.PwmValueOutOfRangeException;
 import home.control.Server;
 import home.control.controller.ThreadController;
 import home.control.model.NaturalFading;
@@ -14,6 +15,8 @@ public class PwmFadeThread extends Thread{
     private PinConfiguration conf;
     private volatile boolean isRunning = true; //"You really should make it volatile. There are no synchronization problems, then."
     private long stepPause;
+
+    private long millisStart;
 
     public PwmFadeThread(PinConfiguration conf) {
         this.conf = conf;
@@ -26,8 +29,11 @@ public class PwmFadeThread extends Thread{
 
     @Override
     public void run() {
-        Gpio.pinMode(conf.getNumber(), Gpio.OUTPUT);
-        SoftPwm.softPwmCreate(conf.getNumber(), 0, Config.PWM_RANGE);
+        millisStart = System.currentTimeMillis();
+        if (conf.getNumber() < 100) {
+            Gpio.pinMode(conf.getNumber(), Gpio.OUTPUT);
+            SoftPwm.softPwmCreate(conf.getNumber(), 0, Config.PWM_RANGE);
+        }
 
         if (conf.isRepeat()) {
             for (int i = 0; i < conf.getCycles(); i++) {
@@ -39,6 +45,7 @@ public class PwmFadeThread extends Thread{
             pwmLoop();
         }
         ThreadController.remove(Thread.currentThread());
+        System.out.println(">>> Thread lifetime of Pin " + conf.getNumber() + ": " + (System.currentTimeMillis() - millisStart) + "ms");
     }
 
     private void pwmLoop() {
@@ -52,7 +59,11 @@ public class PwmFadeThread extends Thread{
     private void fadeUp() {
         for (int i = conf.getStartVal(); i <= conf.getEndVal() ; i = i+stepSize()) {
             if (!isRunning) { break; }
-            fade(i);
+            try {
+                fade(i);
+            } catch (PwmValueOutOfRangeException e) {
+                e.printStackTrace();
+            }
         }
 //        Server.socket.send("Fading Up Message from Server");
     }
@@ -61,20 +72,28 @@ public class PwmFadeThread extends Thread{
     private void fadeDown() {
         for (int i = conf.getStartVal(); i >= conf.getEndVal(); i = i-stepSize()) {
             if (!isRunning) { break; }
-            fade(i);
+            try {
+                fade(i);
+            } catch (PwmValueOutOfRangeException e) {
+                e.printStackTrace();
+            }
         }
         //Server.socket.send("Fading Down Message from Server");
     }
 
-    private void fade(int i) {
+    private void fade(int i) throws PwmValueOutOfRangeException {
         //Number 100-115 means the pins of a I2C PWM-PortExpander PCA9685 (16 Channel(=16 Pins))
         //100 = PWM_00; 101 = PWM_01; ... ; 115 = PWM_15
+        if(i < 0 || i > 100) {
+            throw new PwmValueOutOfRangeException("Given Value of '" + i + "' is out of Range (0-100)");
+        }
+
         if (conf.getNumber() < 100) {
             SoftPwm.softPwmWrite(conf.getNumber(), i);
         } else {
             Server.pca.setPwm(PCA9685Pin.ALL[conf.getNumber()-100], NaturalFading.STEPS_100[i]); //Example: PinNumber 104 should fire on Pin 04 of the PCA9685.
         }
-        pause(stepPause * stepSize()); //Needed to match to the perhaps higher stepSize in the fade-loops (in fadeUp and fadeDown).
+        pause(stepPause * stepSize()); //Needed to match to the maybe higher stepSize in the fade-loops (in fadeUp and fadeDown).
     }
 
     /**
@@ -82,7 +101,6 @@ public class PwmFadeThread extends Thread{
      * If the pause between the steps (calculated in constructor with cycleDuration time, start- and endvalue)
      * is small, the PWM-set-steps can be bigger without a visual effect but with a great reduce of pwm set interval.
      * This should enhance the performance.
-     * @return
      */
     private int stepSize() {
         if(stepPause <= 10 && stepPause > 5){

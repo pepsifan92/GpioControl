@@ -3,6 +3,7 @@ package home.control.controller;
 import home.control.Thread.PwmBlinkThread;
 import home.control.Thread.PwmFadeThread;
 import home.control.Thread.PwmFadeUpDownThread;
+import home.control.Thread.SendTempThread;
 import home.control.model.PinConfiguration;
 
 import java.util.ArrayList;
@@ -44,6 +45,8 @@ public class ThreadController {
                     ((PwmFadeUpDownThread) thread).kill();
                 } else if (thread instanceof PwmBlinkThread) {
                     ((PwmBlinkThread) thread).kill();
+                } else if (thread instanceof SendTempThread) {
+                    ((SendTempThread) thread).kill();
                 }
                 iter.remove();
             }

@@ -39,7 +39,8 @@ public class TemperatureController {
             System.out.println("Temp: " + temp);
             temperature.setTemperature(Integer.parseInt(temp));
             temperature.setTimeStamp(System.currentTimeMillis());
-            Server.socket.send(gson.toJson(temperature));
+//            Server.socket.send(gson.toJson(temperature));
+            Server.sendToAllSockets(gson.toJson(temperature));
         }
     }
 
