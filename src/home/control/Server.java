@@ -1,11 +1,8 @@
 package home.control;
-import java.net.InetSocketAddress;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.logging.Logger;
 
-import com.pi4j.io.gpio.Pin;
+import com.google.gson.Gson;
+import home.control.Base.Timer;
+import home.control.Exception.PinConfigurationUnauthorisedException;
 import home.control.Thread.SendTempThread;
 import home.control.controller.EventController;
 import home.control.controller.PCA9685PwmControl;
@@ -16,24 +13,27 @@ import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 
-import com.google.gson.Gson;
+import java.net.InetSocketAddress;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.logging.Logger;
 
 public class Server extends WebSocketServer {
-    private static final Logger log = Logger.getLogger( Server.class.getName() );
-	private Gson gson;
+    private static final Logger log = Logger.getLogger(Server.class.getName());
+    private Gson gson;
 
-//    public static WebSocket socket;
+    //    public static WebSocket socket;
     private static List<WebSocket> webSocketList;
     private static boolean webSocketListLock = false;
     public static PCA9685PwmControl pca;
-
-	public Server(InetSocketAddress address) {
-		super(address);
+    public Server(InetSocketAddress address) {
+        super(address);
         webSocketList = new ArrayList<>();
         gson = new Gson();
         pca = new PCA9685PwmControl(0x40);
         setupTemperatureThreads();
-	}
+    }
 
     public static void sendToAllSockets(String message) {
         System.out.println("webSocketList Size: " + webSocketList.size());
@@ -83,58 +83,38 @@ public class Server extends WebSocketServer {
 
     @Override
     public void onMessage(WebSocket socket, String message) {
-        long startMillis = System.currentTimeMillis();
+        Timer timer = new Timer();
+        timer.startTimer();
         System.out.println("Received message from " + socket.getRemoteSocketAddress() + ": " + message);
-    	//System.out.println("Incoming Message: " + message);
-
-        PinConfiguration pinConfiguration = null;
-        Temperature temperature = null;
-        boolean isPinConfiguration = false;
 
         try {
-            if(gson.fromJson(message, PinConfiguration.class).getNumber() != -1){
-                isPinConfiguration = true;
-                pinConfiguration = new PinConfiguration(gson.fromJson(message, PinConfiguration.class));
-            } else {
-                System.out.println("No PinConfiguration send");
-            }
-        } catch (Exception e) {
-            System.out.println("Exception: No PinConfiguration send");
-        }
-
-        if (!isPinConfiguration) {
-            try {
-                temperature = gson.fromJson(message, Temperature.class);
-            } catch (Exception e) {
-                System.out.println("Exception: No Temperature send");
-            }
-        }
-
-        try {
-            if (isPinConfiguration) {
-                EventController eventController = new EventController(pinConfiguration);
-                eventController.handleEvent(pinConfiguration.getEvent());
-            } else if (temperature != null) {
-                EventController eventController = new EventController(temperature);
-                eventController.handleEvent(temperature.getEvent());
-            }
-        } catch (Exception e) {
-            System.out.println("No PinConfiguration or Temperature send");
+            handleMessage(message);
+        } catch (PinConfigurationUnauthorisedException e) {
             e.printStackTrace();
         }
 
-        long endMillis = System.currentTimeMillis();
-        long timeNeeded = endMillis - startMillis;
-        System.out.println("Message dispatched in " + timeNeeded + "ms");
+        timer.stopTimer();
+        System.out.println("Message dispatched in " + timer.getTimeNeeded() + "ms");
+    }
+
+    private void handleMessage(String message) throws PinConfigurationUnauthorisedException {
+        PinConfiguration conf = getPinconfigurationFromMessage(message);
+        EventController eventController = new EventController(conf);
+        eventController.handleEvent(conf.getEvent());
+
+    }
+
+    private PinConfiguration getPinconfigurationFromMessage(String message) {
+        return gson.fromJson(message, PinConfiguration.class);
     }
 
     @Override
     public void onError(WebSocket socket, Exception ex) {
-    	try {
-    		System.err.println("an error occured on connection " + socket.getRemoteSocketAddress()  + ":" + ex);
-    	} catch(Exception excep){
-    		System.err.println("Error by handle Error (method: onError). Exception message: " + excep.getMessage());
-    	}
+        try {
+            System.err.println("an error occured on connection " + socket.getRemoteSocketAddress() + ":" + ex);
+        } catch (Exception excep) {
+            System.err.println("Error by handle Error (method: onError). Exception message: " + excep.getMessage());
+        }
         removeSocketFromList(socket);
     }
 

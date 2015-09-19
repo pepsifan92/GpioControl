@@ -20,7 +20,7 @@ public class EventController {
         temperatureController = new TemperatureController(temperature);
     }
 
-    public void handleEvent(Event event) throws PinConfigurationUnauthorisedException, IOException {
+    public void handleEvent(Event event) throws PinConfigurationUnauthorisedException {
         switch (event) {
             case SET:
                 pinController.set();
@@ -41,7 +41,7 @@ public class EventController {
 
                 break;
             case TEMP:
-                temperatureController.sendTemperature();
+//                temperatureController.sendTemperature(); Why did we need this!?
                 break;
             case SHUTDOWN:
 

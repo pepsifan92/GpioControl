@@ -37,6 +37,12 @@ public class ThreadController {
         Iterator<Thread> iter = runningThreads.iterator();
         while (iter.hasNext()) {
             Thread thread = iter.next();
+
+            if (thread == null) {
+                System.out.println("Some Thread Race condition Problem, occurs very rare");
+                break;
+            }
+
             if (thread.getName().equals("" + number)) {
                 //System.out.println("Killing Thread Running on Pin " + number);
                 if (thread instanceof PwmFadeThread) {
